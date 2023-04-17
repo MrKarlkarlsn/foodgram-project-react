@@ -1,3 +1,7 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Subscribe, CustomUsers
+
+
+admin.site.register(CustomUsers)
+admin.site.register(Subscribe)

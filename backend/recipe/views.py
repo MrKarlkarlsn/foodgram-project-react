@@ -88,8 +88,7 @@ class RecipeViewset(ModelViewSet):
     def download_shopping_cart(self, request):
         """Скачавание PDF файла со списком покупок"""
         user = request.user
-        qweryset = IngredientInRecipe.objects.filter(
-            recipe__author__username=user)
+        qweryset = IngredientInRecipe.objects.filter(recipe__shoppings=user)
         qweryset_sort = qweryset.values('ingredient__name',
                                    'ingredient__measurement_unit',
                                    ).annotate(quantity=Sum('quantity')).order_by()

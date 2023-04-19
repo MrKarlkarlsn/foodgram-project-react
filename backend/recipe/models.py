@@ -52,7 +52,7 @@ class Tag(models.Model):
         default='#FFDB8B',
         validators=[
             validators.RegexValidator(
-                regex=r'#[a-f\d]{6}',
+                regex=r'#[0-9A-Fa-f]{6}',
                 message='Цвет не соответствует HEX кодировке.'
             )
         ]
@@ -100,7 +100,7 @@ class Recipe(models.Model):
         on_delete=models.CASCADE,
         related_name='recipes',
     )
-    cooking_time = models.PositiveSmallIntegerField(
+    cooking_time = models.PositiveIntegerField(
         'Время приготовления в минутах',
         validators=[
             validators.MinValueValidator(
@@ -151,11 +151,11 @@ class IngredientInRecipe(models.Model):
         on_delete=models.CASCADE,
         related_name='ingredient_recipe'
     )
-    quantity = models.PositiveSmallIntegerField(
+    quantity = models.PositiveIntegerField(
         'Количество ингредиента',
         validators=[
             validators.MinValueValidator(
-                0,
+                1,
                 message='Ингредиента не может быть 0.'
             )
         ],

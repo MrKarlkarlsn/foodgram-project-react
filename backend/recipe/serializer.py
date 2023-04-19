@@ -3,7 +3,7 @@ from rest_framework.exceptions import ValidationError
 
 from recipe.models import (IngredientInRecipe,
                            Recipe, Ingredient)
-from recipe.fields import Base64ImageField
+from api.fields import Base64ImageField
 
 from users.serializers import UserSerializer
 

@@ -48,7 +48,6 @@ class UserSerializer(serializers.ModelSerializer):
             'is_subscribed',
         )
 
-
     def get_is_subscribed(self, obj):
         """
         Информации о подписке на пользователя

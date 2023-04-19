@@ -24,4 +24,3 @@ class IngredientsSerializer(serializers.ModelSerializer):
             'name',
             'measurement_unit',
         )
-

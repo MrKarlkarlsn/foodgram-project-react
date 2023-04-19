@@ -21,5 +21,3 @@ urlpatterns = [
     path('auth/token/logout/', DeleteTokenViews.as_view()),
     path('', include(router.urls))
 ]
-
-

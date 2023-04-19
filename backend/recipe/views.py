@@ -30,7 +30,6 @@ class RecipeViewset(ModelViewSet):
     permission_classes = [IsAuthorOrAdmin,
                           IsAuthenticatedOrReadOnly]
 
-
     @action(
         detail=False,
         methods=['POST', 'DELETE'],
@@ -90,10 +89,6 @@ class RecipeViewset(ModelViewSet):
         user = request.user
         qweryset = IngredientInRecipe.objects.filter(recipe__shoppings=user)
         qweryset_sort = qweryset.values('ingredient__name',
-                                   'ingredient__measurement_unit',
-                                   ).annotate(quantity=Sum('quantity')).order_by()
+                                        'ingredient__measurement_unit',
+                                        ).annotate(quantity=Sum('quantity')).order_by()
         return generate_pdf(qweryset_sort)
-
-
-
-

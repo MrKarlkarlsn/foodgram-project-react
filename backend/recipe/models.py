@@ -3,7 +3,6 @@ from django.core import validators
 from django.db import models
 
 
-
 class Ingredient(models.Model):
     """
     Модель для хранения ингридиентов.
@@ -70,7 +69,6 @@ class Tag(models.Model):
         verbose_name = 'Тег'
         verbose_name_plural = 'Теги'
         ordering = ('name',)
-
 
     def __str__(self):
         return f'Тег {self.name}, цвет кода HEX - {self.color}'
@@ -165,7 +163,6 @@ class IngredientInRecipe(models.Model):
         verbose_name = 'Ингридиент для рецепта'
         verbose_name_plural = 'Ингредиенты для рецепта'
         ordering = ('recipe__tags',)
-
 
     def __str__(self):
         return (f'Для {self.recipe} понадобиться {self.quantity} '

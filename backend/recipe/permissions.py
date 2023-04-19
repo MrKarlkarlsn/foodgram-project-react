@@ -6,6 +6,7 @@ class IsAdminOrReadOnly(BasePermission):
     """
     Разрешения для администратора.
     """
+
     def has_permission(self, request, view):
         if request.method in SAFE_METHODS:
             return True

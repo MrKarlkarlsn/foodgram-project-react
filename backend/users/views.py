@@ -28,7 +28,6 @@ class UserViewsSet(mixins.CreateModelMixin,
     pagination_class = UserPagination
     permission_classes = [AllowAny]
 
-
     @action(methods=['GET'],
             detail=False,
             url_path='me')
@@ -62,7 +61,7 @@ class UserViewsSet(mixins.CreateModelMixin,
         return Response(serializer.errors,
                         status=status.HTTP_400_BAD_REQUEST)
 
-    @action(methods=['POST','DELETE'],
+    @action(methods=['POST', 'DELETE'],
             permission_classes=[IsAuthenticated],
             url_path=r'(?P<id>[\d]+)/favorite',
             url_name='favorite',
@@ -87,7 +86,8 @@ class UserViewsSet(mixins.CreateModelMixin,
                     author,
                     context={'request': self.request}
                 )
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
+                return Response(serializer.data,
+                                status=status.HTTP_201_CREATED)
             if self.request.method == 'DELETE' and subscription.exists():
                 subscription.delete()
                 return Response(status=status.HTTP_204_NO_CONTENT)

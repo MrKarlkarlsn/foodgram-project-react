@@ -18,7 +18,8 @@ def generate_pdf(queryset):
     y = 150
     pdf_file.drawString(40, 100, text='Cписок покупок:')
     for obj in queryset:
-        text = (f'{obj["ingredient__name"].capitalize()} --> {obj["quantity"]} '
+        text = (f'{obj["ingredient__name"].capitalize()} '
+                f'--> {obj["quantity"]} '
                 f'{obj["ingredient__measurement_unit"]}')
         pdf_file.drawString(100, y, text=text)
         y += 20

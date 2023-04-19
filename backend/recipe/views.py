@@ -3,7 +3,8 @@ from django.shortcuts import get_object_or_404
 
 from rest_framework import status
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+from rest_framework.permissions import (IsAuthenticatedOrReadOnly,
+                                        IsAuthenticated)
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 
@@ -90,5 +91,6 @@ class RecipeViewset(ModelViewSet):
         qweryset = IngredientInRecipe.objects.filter(recipe__shoppings=user)
         qweryset_sort = qweryset.values('ingredient__name',
                                         'ingredient__measurement_unit',
-                                        ).annotate(quantity=Sum('quantity')).order_by()
+                                        ).annotate(
+            quantity=Sum('quantity')).order_by()
         return generate_pdf(qweryset_sort)

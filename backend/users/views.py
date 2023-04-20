@@ -113,7 +113,7 @@ class UserViewsSet(mixins.CreateModelMixin,
         )
         pages = self.paginate_queryset(queryset)
         serializer = self.get_serializer(
-            pages,many=True,
+            pages, many=True,
             context={'request': request})
 
         return self.get_paginated_response(serializer.data)

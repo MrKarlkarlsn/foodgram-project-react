@@ -11,6 +11,3 @@ class FilterIngredient(FilterSet):
     class Meta:
         model = Ingredient
         fields = ['name']
-
-
-

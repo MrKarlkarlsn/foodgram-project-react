@@ -57,6 +57,7 @@ jobs:
         passphrase: ${{ secrets.PASSPHRASE }}
         script: |
             sudo systemctl stop nginx
+            sudo systemctl stop postgresql  
             rm .env
             touch .env
             echo POSTGRES_DB=${{ secrets.DB_NAME }} >> .env
@@ -64,7 +65,6 @@ jobs:
             echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
             echo POSTGRES_HOST=${{ secrets.POSTGRES_HOST }} >> .env
             echo POSTGRES_PORT=${{ secrets.POSTGRES_PORT }} >> .env
-            cd infra/
             sudo docker=compose down
             sudo docker image prune -a
             sudo docker-compose up -d

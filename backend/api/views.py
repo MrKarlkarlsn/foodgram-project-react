@@ -22,4 +22,3 @@ class IngredientsViewsSet(ReadOnlyModelViewSet):
     permission_classes = [AllowAny]
     filterset_class = FilterIngredient
     pagination_class = None
-

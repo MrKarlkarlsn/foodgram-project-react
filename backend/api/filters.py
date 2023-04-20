@@ -35,7 +35,7 @@ class FilterRecipe(rest_framework.FilterSet):
             in_favorite__user=self.request.user
         )
 
-    def get_is_in_shopping_cart(self,value):
+    def get_is_in_shopping_cart(self, value):
         if value:
             return Recipe.objects.filter(
                 shopping_recipe__user=self.request.user

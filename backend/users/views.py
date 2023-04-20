@@ -111,9 +111,12 @@ class UserViewsSet(mixins.CreateModelMixin,
         queryset = CustomUsers.objects.filter(
             author__user=request.user
         )
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data,
-                        status=status.HTTP_200_OK)
+        pages = self.paginate_queryset(queryset)
+        serializer = self.get_serializer(
+            pages,many=True,
+            context={'request': request})
+
+        return self.get_paginated_response(serializer.data)
 
 
 class GetTokenView(ObtainAuthToken):

@@ -4,8 +4,6 @@ from api.filters import FilterIngredient
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework.permissions import AllowAny
 
-from django_filters.rest_framework import DjangoFilterBackend
-
 from recipe.models import Tag, Ingredient
 
 
@@ -21,5 +19,4 @@ class IngredientsViewsSet(ReadOnlyModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientsSerializer
     permission_classes = [AllowAny]
-    filter_backends = [DjangoFilterBackend]
-    filterset_class = FilterIngredient
+    filter_class = FilterIngredient

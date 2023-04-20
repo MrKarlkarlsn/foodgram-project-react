@@ -18,7 +18,6 @@ from recipe.permissions import IsAuthorOrAdmin
 from recipe.generate_pdf import generate_pdf
 
 from api.pagination import UserPagination
-from api.filters import FilterRecipe
 
 
 class RecipeViewset(ModelViewSet):
@@ -31,8 +30,6 @@ class RecipeViewset(ModelViewSet):
     pagination_class = UserPagination
     permission_classes = [IsAuthorOrAdmin,
                           IsAuthenticatedOrReadOnly]
-    filterset_class = FilterRecipe
-    filter_backends = [DjangoFilterBackend]
 
     @action(
         detail=False,

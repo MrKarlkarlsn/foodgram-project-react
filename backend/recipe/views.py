@@ -18,6 +18,7 @@ from recipe.permissions import IsAuthorOrAdmin
 from recipe.generate_pdf import generate_pdf
 
 from api.pagination import UserPagination
+from api.filters import FilterRecipe
 
 
 class RecipeViewset(ModelViewSet):
@@ -30,6 +31,8 @@ class RecipeViewset(ModelViewSet):
     pagination_class = UserPagination
     permission_classes = [IsAuthorOrAdmin,
                           IsAuthenticatedOrReadOnly]
+    filterset_class = FilterRecipe
+    filter_backends = [DjangoFilterBackend]
 
     @action(
         detail=False,
@@ -84,7 +87,9 @@ class RecipeViewset(ModelViewSet):
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
     @action(methods=['GET'],
-            detail=False)
+            detail=False,
+            url_path='download_shopping_cart',
+            url_name='cart',)
     def download_shopping_cart(self, request):
         """Скачавание PDF файла со списком покупок"""
         user = request.user

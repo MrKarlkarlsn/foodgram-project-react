@@ -31,6 +31,14 @@ class RecipeViewset(ModelViewSet):
     permission_classes = [IsAuthorOrAdmin,
                           IsAuthenticatedOrReadOnly]
 
+    def perform_create(self, serializer):
+        user = self.request.user
+        return serializer.save(author=user)
+
+    def perform_update(self, serializer):
+        user = self.request.user
+        return serializer.save(author=user)
+
     @action(
         detail=False,
         methods=['POST', 'DELETE'],

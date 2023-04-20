@@ -1,12 +1,11 @@
-import django_filters
-
+from django_filters import rest_framework
 from users.models import CustomUsers
 
 from recipe.models import Ingredient, Recipe, Tag
 
 
-class FilterIngredient(django_filters.FilterSet):
-    name = django_filters.CharFilter(
+class FilterIngredient(rest_framework.FilterSet):
+    name = rest_framework.CharFilter(
         field_name='name',
         lookup_expr='istartswith'
     )
@@ -16,13 +15,13 @@ class FilterIngredient(django_filters.FilterSet):
         fields = ('name', 'measurement_unit')
 
 
-class FilterRecipe(django_filters.FilterSet):
-    tags = django_filters.ModelMultipleChoiceFilter(
+class FilterRecipe(rest_framework.FilterSet):
+    tags = rest_framework.ModelMultipleChoiceFilter(
         field_name='tags__slug',
         to_field_name='slug',
         queryset=Tag.objects.all(),
     )
-    author = django_filters.ModelChoiceFilter(
+    author = rest_framework.ModelChoiceFilter(
         queryset=CustomUsers.objects.all()
     )
 

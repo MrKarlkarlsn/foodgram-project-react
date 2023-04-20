@@ -12,6 +12,7 @@ class TagsViewsSet(ReadOnlyModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     permission_classes = [AllowAny]
+    pagination_class = None
 
 
 class IngredientsViewsSet(ReadOnlyModelViewSet):
@@ -19,4 +20,6 @@ class IngredientsViewsSet(ReadOnlyModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientsSerializer
     permission_classes = [AllowAny]
-    filter_class = FilterIngredient
+    filterset_class = FilterIngredient
+    pagination_class = None
+

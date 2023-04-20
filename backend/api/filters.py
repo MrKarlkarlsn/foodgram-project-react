@@ -1,53 +1,31 @@
-from django_filters import rest_framework
+import django_filters
 
-from recipe.models import Ingredient, Recipe
+from users.models import CustomUsers
 
-
-class FilterRecipe(rest_framework.FilterSet):
-    """
-    """
-    is_favorited = rest_framework.BooleanFilter(
-        method='get_favorite',
-        label='favorite',
-    )
-    tags = rest_framework.AllValuesMultipleFilter(
-        field_name='tags__slug',
-        label='tags',
-    )
-    is_in_shopping_cart = rest_framework.BooleanFilter(
-        method='get_is_in_shopping_cart',
-        label='shopping_cart',
-    )
-
-    class Meta:
-        model = Recipe
-        fields = (
-            'tags',
-            'author',
-            'is_favorited',
-            'is_in_shopping_cart',
-        )
-
-    def get_favorite(self, queryset, value):
-        if value:
-            return queryset.filter(in_favorite__user=self.request.user)
-        return queryset.exclude(
-            in_favorite__user=self.request.user
-        )
-
-    def get_is_in_shopping_cart(self, value):
-        if value:
-            return Recipe.objects.filter(
-                shopping_recipe__user=self.request.user
-            )
+from recipe.models import Ingredient, Recipe, Tag
 
 
-class FilterIngredient(rest_framework.filterset):
-    name = rest_framework.CharFilter(
+class FilterIngredient(django_filters.FilterSet):
+    name = django_filters.CharFilter(
         field_name='name',
-        lookup_expr='istartswith',
+        lookup_expr='istartswith'
     )
 
     class Meta:
         model = Ingredient
-        fields = ('name',)
+        fields = ('name', 'measurement_unit')
+
+
+class FilterRecipe(django_filters.FilterSet):
+    tags = django_filters.ModelMultipleChoiceFilter(
+        field_name='tags__slug',
+        to_field_name='slug',
+        queryset=Tag.objects.all(),
+    )
+    author = django_filters.ModelChoiceFilter(
+        queryset=CustomUsers.objects.all()
+    )
+
+    class Meta:
+        model = Recipe
+        fields = ('tags', 'author')

@@ -1,6 +1,7 @@
 from io import BytesIO
 
 from django.http import HttpResponse
+from django.templatetags.static import static
 
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfgen import canvas
@@ -11,9 +12,11 @@ def generate_pdf(queryset):
     """Создание PDF файла для отправки пользователю"""
     buffer = BytesIO()
 
-    pdfmetrics.registerFont(TTFont('DejaVuSerif', 'DejaVuSerif.ttf'))
+    path_font = static('fonts/tupo-vyaz_thin.ttf')
+    pdfmetrics.registerFont(TTFont('tupo-vyaz_thin', path_font))
+
     pdf_file = canvas.Canvas(buffer, bottomup=0)
-    pdf_file.setFont('DejaVuSerif', 14)
+    pdf_file.setFont('tupo-vyaz_thin', 14)
 
     y = 150
     pdf_file.drawString(40, 100, text='Cписок покупок:')

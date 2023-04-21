@@ -1,7 +1,6 @@
 from io import BytesIO
 
 from django.http import HttpResponse
-from django.templatetags.static import static
 
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfgen import canvas

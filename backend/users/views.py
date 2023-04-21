@@ -63,12 +63,12 @@ class UserViewsSet(mixins.CreateModelMixin,
 
     @action(methods=['POST', 'DELETE'],
             permission_classes=[IsAuthenticated],
-            url_path=r'(?P<id>[\d]+)/favorite',
-            url_name='favorite',
+            url_path=r'(?P<id>[\d]+)/subscribe',
+            url_name='subscribe',
             detail=False)
-    def favorite(self, **kwargs):
+    def subscribe(self, **kwargs):
         """Метод подписки и отписки от пользователя
-        Эндпоинт ./users/<id>/favorite/"""
+        Эндпоинт ./users/<id>/subscribe/"""
         user = self.request.user
         author_id = kwargs['id']
 

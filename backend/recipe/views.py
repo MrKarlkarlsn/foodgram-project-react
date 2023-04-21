@@ -15,7 +15,7 @@ from users.models import CustomUsers
 from recipe.models import Recipe, IngredientInRecipe
 from recipe.serializer import RecipeSerializer, UserLikeRecipeSerializer
 from recipe.permissions import IsAuthorOrAdmin
-from recipe.generate_pdf import generate_pdf
+from recipe.fonts.generate_pdf import generate_pdf
 
 from api.pagination import UserPagination
 
@@ -54,7 +54,7 @@ class RecipeViewset(ModelViewSet):
         url_name='favorite',
         pagination_class=None,
         permission_classes=[IsAuthenticated])
-    def favorites(self, request, **kwargs):
+    def favorite(self, request, **kwargs):
         """Добавление и удаление рецепта в избранное"""
         recipe = get_object_or_404(Recipe, id=kwargs['id'])
         user = get_object_or_404(CustomUsers, id=request.user.id)

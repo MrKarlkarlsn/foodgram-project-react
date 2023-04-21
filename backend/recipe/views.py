@@ -24,7 +24,7 @@ class RecipeViewset(ModelViewSet):
     """
     Эндпоинт ./recipes/
     """
-    queryset = Recipe.objects.all()
+    queryset = Recipe.objects.select_related('author').all()
     serializer_class = RecipeSerializer
     filter_backends = (DjangoFilterBackend,)
     pagination_class = UserPagination
@@ -36,8 +36,14 @@ class RecipeViewset(ModelViewSet):
         return serializer.save(author=user)
 
     def perform_update(self, serializer):
-        user = self.request.user
-        return serializer.save(author=user)
+        return serializer.save(author=self.request.user)
+
+    def partial_update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance=instance, data=request.data, partial=True)
+        serializer.is_valid()
+        self.perform_update(serializer)
+        return Response(serializer.data)
 
     @action(
         detail=False,

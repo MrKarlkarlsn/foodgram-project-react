@@ -125,7 +125,7 @@ class RecipeSerializer(serializers.ModelSerializer):
             instance.tags.add(*tags)
         if 'ingredient_recipe' in validated_data:
             ingredients = validated_data.pop('ingredient_recipe')
-            Ingredient.objects.filter(recipe=instance).delete()
+            IngredientInRecipe.objects.filter(recipe=instance).delete()
             self.add_ingredients(instance, ingredients)
         super().update(instance, validated_data)
         return instance

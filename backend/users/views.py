@@ -66,19 +66,19 @@ class UserViewsSet(mixins.CreateModelMixin,
             url_path=r'(?P<id>[\d]+)/subscribe',
             url_name='subscribe',
             detail=False)
-    def subscribe(self, **kwargs):
+    def subscribe(self, request, **kwargs):
         """Метод подписки и отписки от пользователя
         Эндпоинт ./users/<id>/subscribe/"""
-        user = self.request.user
+        user = request.user
         author_id = kwargs['id']
 
         author = get_object_or_404(CustomUsers, id=author_id)
         subscription = Subscribe.objects.filter(
             user=user.id,
-            user_author=author_id
+            user_author=author
         )
 
-        if user.id != author_id:
+        if user.id != author.id:
             if self.request.method == 'POST' and not subscription.exists():
                 Subscribe.objects.create(user=user,
                                          user_author=author)

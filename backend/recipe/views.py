@@ -15,7 +15,7 @@ from users.models import CustomUsers
 from recipe.models import Recipe, IngredientInRecipe
 from recipe.serializer import RecipeSerializer, UserLikeRecipeSerializer
 from recipe.permissions import IsAuthorOrAdmin
-from recipe.fonts.generate_pdf import generate_pdf
+from recipe.generate_pdf import generate_pdf
 
 from api.pagination import UserPagination
 

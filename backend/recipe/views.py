@@ -8,8 +8,6 @@ from rest_framework.permissions import (IsAuthenticatedOrReadOnly,
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 
-from django_filters.rest_framework import DjangoFilterBackend
-
 from users.models import CustomUsers
 
 from recipe.models import Recipe, IngredientInRecipe
@@ -18,15 +16,16 @@ from recipe.permissions import IsAuthorOrAdmin
 from recipe.generate_pdf import generate_pdf
 
 from api.pagination import UserPagination
+from api.filters import FoltersRecipe
 
 
 class RecipeViewset(ModelViewSet):
     """
     Эндпоинт ./recipes/
     """
-    queryset = Recipe.objects.select_related('author').all()
+    queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
-    filter_backends = (DjangoFilterBackend,)
+    filterset_class = FoltersRecipe
     pagination_class = UserPagination
     permission_classes = [IsAuthorOrAdmin,
                           IsAuthenticatedOrReadOnly]

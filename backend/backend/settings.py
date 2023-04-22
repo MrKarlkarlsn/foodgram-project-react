@@ -1,6 +1,11 @@
 import os
 from pathlib import Path
 
+from dotenv import load_dotenv
+
+
+load_dotenv()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -70,10 +75,19 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DB_NAME', default="db"),
+        'USER': os.getenv('POSTGRES_USER', default="postgresql"),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', default="1234"),
+        'HOST': os.getenv('POSTGRES_HOST', default="127.0.0.1"),
+        'PORT': os.getenv('POSTGRES_PORT', default="5432"),
+    },
+    'debug': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': str(BASE_DIR / 'db.sqlite3'),
     }
 }
+
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [

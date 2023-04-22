@@ -104,6 +104,10 @@ class Recipe(models.Model):
             validators.MinValueValidator(
                 1,
                 message='Время должэно быть более 1-ой минуты'
+            ),
+            validators.MaxValueValidator(
+                32767,
+                message='Превышенно максимальное число'
             )
         ]
     )
@@ -126,7 +130,7 @@ class Recipe(models.Model):
     class Meta:
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
-        ordering = ('name',)
+        ordering = ('-pub_date',)
 
     def __str__(self):
         return f'Рецепт: {self.name}. автор: {self.author}.'
@@ -155,6 +159,10 @@ class IngredientInRecipe(models.Model):
             validators.MinValueValidator(
                 1,
                 message='Ингредиента не может быть 0.'
+            ),
+            validators.MaxValueValidator(
+                32767,
+                message='Превышенно максимальное число'
             )
         ],
     )

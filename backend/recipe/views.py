@@ -1,6 +1,8 @@
 from django.db.models import Sum
 from django.shortcuts import get_object_or_404
 
+from django_filters.rest_framework import DjangoFilterBackend
+
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.permissions import (IsAuthenticatedOrReadOnly,
@@ -16,7 +18,7 @@ from recipe.permissions import IsAuthorOrAdmin
 from recipe.generate_pdf import generate_pdf
 
 from api.pagination import UserPagination
-from api.filters import FoltersRecipe
+from api.filters import FiltersRecipe
 
 
 class RecipeViewset(ModelViewSet):
@@ -25,17 +27,15 @@ class RecipeViewset(ModelViewSet):
     """
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
-    filterset_class = FoltersRecipe
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = FiltersRecipe
     pagination_class = UserPagination
     permission_classes = [IsAuthorOrAdmin,
                           IsAuthenticatedOrReadOnly]
 
-    def perform_create(self, serializer):
-        user = self.request.user
-        return serializer.save(author=user)
 
-    def perform_update(self, serializer):
-        return serializer.save(author=self.request.user)
+    # def perform_update(self, serializer):
+    #     return serializer.save(author=self.request.user)
 
     def partial_update(self, request, *args, **kwargs):
         instance = self.get_object()

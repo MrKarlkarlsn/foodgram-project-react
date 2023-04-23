@@ -1,12 +1,11 @@
-from django_filters import CharFilter, FilterSet, filters
-
+from django_filters.rest_framework import FilterSet, filters
 from recipe.models import Ingredient, Recipe
 
 from users.models import CustomUsers
 
 
 class FilterIngredient(FilterSet):
-    name = CharFilter(
+    name = filters.CharFilter(
         field_name='name', lookup_expr='startswith'
     )
 
@@ -15,10 +14,10 @@ class FilterIngredient(FilterSet):
         fields = ['name']
 
 
-class FoltersRecipe(FilterSet):
+class FiltersRecipe(FilterSet):
     tags = filters.AllValuesMultipleFilter(field_name='tags__slug')
     author = filters.ModelChoiceFilter(queryset=CustomUsers.objects.all())
-    is_favorited = filters.BooleanFilter(method='favorites_filter')
+    is_favorited = filters.BooleanFilter(method='favorited_filter')
     is_in_shopping_cart = filters.BooleanFilter(method='shop_filter')
 
     def shop_filter(self, queryset, name, value):
@@ -26,7 +25,7 @@ class FoltersRecipe(FilterSet):
             return queryset.filter(shoppings=self.request.user)
         return queryset
 
-    def favorites_filter(self, queryset, name, value):
+    def favorited_filter(self, queryset, name, value):
         if self.request.user.is_authenticated and value:
             return queryset.filter(favorites=self.request.user)
         return queryset
@@ -35,5 +34,7 @@ class FoltersRecipe(FilterSet):
         model = Recipe
         fields = [
             'author',
-            'tags'
+            'tags',
+            'is_in_shopping_cart',
+            'is_favorited'
         ]

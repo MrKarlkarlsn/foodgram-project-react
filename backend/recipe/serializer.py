@@ -1,4 +1,3 @@
-from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
@@ -72,10 +71,6 @@ class RecipeSerializer(serializers.ModelSerializer):
             return False
         return obj.shoppings.filter(id=request.user.id).exists()
 
-    def to_representation(self, instance):
-        self.fields['tags'] = TagSerializer(many=True)
-        return super().to_representation(instance)
-
     def validate(self, data):
         ingredients = data['ingredient_recipe']
         for ingredient in ingredients:
@@ -98,35 +93,35 @@ class RecipeSerializer(serializers.ModelSerializer):
         return data
 
     @staticmethod
-    def add_ingredients(instance, ingredients):
+    def add_tags(recipe, tags):
+        for tag in tags:
+            recipe.tags.add(tag)
+
+    @staticmethod
+    def add_ingredients(recipe, ingredients):
         for ingredient in ingredients:
-            ingredient_id = ingredient['ingredient']['id']
-            model = get_object_or_404(Ingredient, id=ingredient_id)
             IngredientInRecipe.objects.create(
-                ingredient=model,
-                recipe=instance,
+                ingredient_id=ingredient['ingredient']['id'],
+                recipe=recipe,
                 quantity=ingredient['quantity']
             )
 
     def create(self, validated_data):
-        if 'tags' in validated_data:
-            tags = validated_data.pop('tags')
-        if 'ingredient_recipe' in validated_data:
-            ingredients = validated_data.pop('ingredient_recipe')
-        recipe = Recipe.objects.create(**validated_data)
-        recipe.tags.add(*tags)
+        author = self.context.get('request').user
+        tags = validated_data.pop('tags')
+        ingredients = validated_data.pop('ingredient_recipe')
+        recipe = Recipe.objects.create(author=author, **validated_data)
+        self.add_tags(recipe, tags)
         self.add_ingredients(recipe, ingredients)
         return recipe
 
     def update(self, instance, validated_data):
-        if 'tags' in validated_data:
-            tags = validated_data.pop('tags')
-            instance.tags.clear()
-            instance.tags.add(*tags)
-        if 'ingredient_recipe' in validated_data:
-            ingredients = validated_data.pop('ingredient_recipe')
-            IngredientInRecipe.objects.filter(recipe=instance).delete()
-            self.add_ingredients(instance, ingredients)
+        tags = validated_data.pop('tags')
+        instance.tags.clear()
+        instance.tags.add(*tags)
+        ingredients = validated_data.pop('ingredient_recipe')
+        IngredientInRecipe.objects.filter(recipe=instance).delete()
+        self.add_ingredients(instance, ingredients)
         super().update(instance, validated_data)
         return instance
 

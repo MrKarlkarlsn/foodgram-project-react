@@ -11,10 +11,10 @@ def generate_pdf(queryset):
     """Создание PDF файла для отправки пользователю"""
     buffer = BytesIO()
 
-    pdfmetrics.registerFont(TTFont('tupo-vyaz_thin', 'tupo-vyaz_thin.ttf'))
+    pdfmetrics.registerFont(TTFont('tupo-vyaz_regular', 'tupo-vyaz_regular.ttf'))
 
     pdf_file = canvas.Canvas(buffer, bottomup=0)
-    pdf_file.setFont('tupo-vyaz_thin', 22)
+    pdf_file.setFont('tupo-vyaz_regular', 25)
 
     y = 150
     pdf_file.drawString(40, 100, text='Cписок покупок:')

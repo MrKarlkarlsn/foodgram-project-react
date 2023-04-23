@@ -33,10 +33,6 @@ class RecipeViewset(ModelViewSet):
     permission_classes = [IsAuthorOrAdmin,
                           IsAuthenticatedOrReadOnly]
 
-
-    # def perform_update(self, serializer):
-    #     return serializer.save(author=self.request.user)
-
     def partial_update(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance=instance,

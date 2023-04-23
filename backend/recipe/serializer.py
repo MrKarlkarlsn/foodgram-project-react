@@ -2,12 +2,10 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
 from recipe.models import (IngredientInRecipe,
-                           Recipe, Ingredient)
+                           Recipe)
 from api.fields import Base64ImageField
 
 from users.serializers import UserSerializer
-
-from api.serializer import TagSerializer
 
 
 class IngredientInRecipeSerializer(serializers.ModelSerializer):

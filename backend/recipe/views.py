@@ -88,7 +88,8 @@ class RecipeViewset(ModelViewSet):
 
         if request.method == 'POST' and not queryset:
             user.shopping_recipes.add(recipe)
-            return Response(status=status.HTTP_201_CREATED)
+            serializer = UserLikeRecipeSerializer(recipe)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         if request.method == 'DELETE' and queryset:
             user.shopping_recipes.remove(recipe)
             return Response(status=status.HTTP_204_NO_CONTENT)

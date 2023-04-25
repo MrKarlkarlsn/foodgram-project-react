@@ -6,7 +6,7 @@ from users.models import CustomUsers
 
 class FilterIngredient(FilterSet):
     name = filters.CharFilter(
-        field_name='name', lookup_expr='startswith'
+        field_name='name', lookup_expr='icontains'
     )
 
     class Meta:

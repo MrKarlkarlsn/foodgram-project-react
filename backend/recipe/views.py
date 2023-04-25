@@ -30,14 +30,8 @@ class RecipeViewset(ModelViewSet):
     permission_classes = [IsAuthorOrAdmin,
                           IsAuthenticatedOrReadOnly]
 
-    def partial_update(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance=instance,
-                                         data=request.data,
-                                         partial=True)
-        serializer.is_valid()
-        self.perform_update(serializer)
-        return Response(serializer.data)
+    def perform_update(self, serializer):
+        serializer.save(author=self.request.user)
 
     @action(
         detail=False,
@@ -58,7 +52,8 @@ class RecipeViewset(ModelViewSet):
         if request.method == 'POST' and not recipe_like:
             user.favorite_recipes.add(recipe)
             serializer = UserLikeRecipeSerializer(recipe)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.data,
+                            status=status.HTTP_201_CREATED)
         if request.method == 'DELETE' and recipe:
             user.favorite_recipes.remove(recipe)
             return Response(status=status.HTTP_204_NO_CONTENT)
@@ -86,7 +81,8 @@ class RecipeViewset(ModelViewSet):
         if request.method == 'POST' and not queryset:
             user.shopping_recipes.add(recipe)
             serializer = UserLikeRecipeSerializer(recipe)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.data,
+                            status=status.HTTP_201_CREATED)
         if request.method == 'DELETE' and queryset:
             user.shopping_recipes.remove(recipe)
             return Response(status=status.HTTP_204_NO_CONTENT)

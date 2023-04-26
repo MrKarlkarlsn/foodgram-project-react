@@ -15,8 +15,7 @@ class FilterIngredient(FilterSet):
 
 
 class FiltersRecipe(FilterSet):
-    tags = filters.CharFilter(field_name='tags__slug',
-                              lookup_expr='icontains')
+    tags = filters.CharFilter(method='tags_filter')
     author = filters.ModelChoiceFilter(queryset=CustomUsers.objects.all())
     is_favorited = filters.BooleanFilter(method='favorited_filter')
     is_in_shopping_cart = filters.BooleanFilter(method='shop_filter')
@@ -29,6 +28,12 @@ class FiltersRecipe(FilterSet):
     def favorited_filter(self, queryset, name, value):
         if self.request.user.is_authenticated and value:
             return queryset.filter(favorites=self.request.user)
+        return queryset
+
+    def tags_filter(self, queryset, name, value):
+        filter_data = queryset.filter(tags__slug=value).exists()
+        if filter_data:
+            return filter_data
         return queryset
 
     class Meta:

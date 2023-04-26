@@ -16,6 +16,7 @@ class IngredientInRecipeAdmin(admin.ModelAdmin):
     list_display = ('id', 'ingredient', 'recipe', 'quantity')
     empty_value_display = '<пусто>'
 
+
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'pub_date', 'author', 'count_favorites',

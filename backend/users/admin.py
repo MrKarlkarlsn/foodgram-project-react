@@ -10,6 +10,7 @@ class CustomUserAdmin(admin.ModelAdmin):
     search_fields = ('email', 'username')
     empty_value_display = '<пусто>'
 
+
 @admin.register(Subscribe)
 class SubscribeAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'user_author')

@@ -1,8 +1,5 @@
 from django_filters.rest_framework import FilterSet, filters
-from recipe.models import Ingredient, Recipe
-
-from users.models import CustomUsers
-
+from recipe.models import Ingredient
 
 class FilterIngredient(FilterSet):
     name = filters.CharFilter(
@@ -12,30 +9,3 @@ class FilterIngredient(FilterSet):
     class Meta:
         model = Ingredient
         fields = ['name']
-
-
-class FiltersRecipe(FilterSet):
-    tags = filters.BaseInFilter(field_name='tags__slug', lookup_expr='in')
-    author = filters.ModelChoiceFilter(queryset=CustomUsers.objects.all())
-    is_favorited = filters.BooleanFilter(method='favorited_filter')
-    is_in_shopping_cart = filters.BooleanFilter(method='shop_filter')
-
-    def shop_filter(self, queryset, name, value):
-        if self.request.user.is_authenticated and value:
-            return queryset.filter(shoppings=self.request.user)
-        return queryset
-
-    def favorited_filter(self, queryset, name, value):
-        if self.request.user.is_authenticated and value:
-            return queryset.filter(favorites=self.request.user)
-        return queryset
-
-    class Meta:
-        model = Recipe
-        fields = [
-            'tags',
-            'author',
-            'is_in_shopping_cart',
-            'is_favorited'
-        ]
-        strict = True

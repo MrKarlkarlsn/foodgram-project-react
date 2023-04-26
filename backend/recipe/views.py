@@ -1,7 +1,6 @@
 from django.db.models import Sum
 from django.shortcuts import get_object_or_404
 
-from django_filters.rest_framework import DjangoFilterBackend
 
 from rest_framework import status
 from rest_framework.decorators import action
@@ -18,7 +17,6 @@ from recipe.permissions import IsAuthorOrAdmin
 from recipe.generate_pdf import generate_pdf
 
 from api.pagination import UserPagination
-from api.filters import FiltersRecipe
 
 
 class RecipeViewset(ModelViewSet):
@@ -27,11 +25,23 @@ class RecipeViewset(ModelViewSet):
     """
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_class = FiltersRecipe
     pagination_class = UserPagination
     permission_classes = [IsAuthorOrAdmin,
                           IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        user = self.request.user
+
+        queryset = Recipe.objects.all()
+        if self.request.query_params.getlist('tags'):
+            list = self.request.query_params.getlist('tags')
+            queryset = queryset.filter(tags__slug__in=list).distinct()
+        if self.request.query_params.get('is_favorited') == '1':
+            queryset = queryset.filter(favorites=user)
+        if self.request.query_params.get('is_in_shopping_cart') == '1':
+            queryset = queryset.filter(shoppings=user)
+        return queryset
+
 
     def perform_update(self, serializer):
         serializer.save(author=self.request.user)

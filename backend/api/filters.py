@@ -15,7 +15,7 @@ class FilterIngredient(FilterSet):
 
 
 class FiltersRecipe(FilterSet):
-    tags = filters.BaseInFilter(field_name='tags__slug')
+    tags = filters.BaseInFilter(field_name='tags__slug', lookup_expr='in')
     author = filters.ModelChoiceFilter(queryset=CustomUsers.objects.all())
     is_favorited = filters.BooleanFilter(method='favorited_filter')
     is_in_shopping_cart = filters.BooleanFilter(method='shop_filter')

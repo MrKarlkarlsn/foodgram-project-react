@@ -16,7 +16,8 @@ class FilterIngredient(FilterSet):
 
 
 class FiltersRecipe(FilterSet):
-    tags = django_filters.CharFilter(field_name='tags__slug', lookup_expr='icontains')
+    tags = django_filters.CharFilter(field_name='tags__slug',
+                                     lookup_expr='icontains')
     author = filters.ModelChoiceFilter(queryset=CustomUsers.objects.all())
     is_favorited = filters.BooleanFilter(method='favorited_filter')
     is_in_shopping_cart = filters.BooleanFilter(method='shop_filter')

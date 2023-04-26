@@ -42,7 +42,6 @@ class RecipeViewset(ModelViewSet):
             queryset = queryset.filter(shoppings=user)
         return queryset
 
-
     def perform_update(self, serializer):
         serializer.save(author=self.request.user)
 

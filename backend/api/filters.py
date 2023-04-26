@@ -1,5 +1,5 @@
 from django_filters.rest_framework import FilterSet, filters
-from recipe.models import Ingredient, Recipe, Tag
+from recipe.models import Ingredient, Recipe
 
 from users.models import CustomUsers
 
@@ -29,7 +29,6 @@ class FiltersRecipe(FilterSet):
         if self.request.user.is_authenticated and value:
             return queryset.filter(favorites=self.request.user)
         return queryset
-
 
     class Meta:
         model = Recipe

@@ -1,6 +1,5 @@
 from django.db.models import Sum
 from django.shortcuts import get_object_or_404
-from django_filters.rest_framework import DjangoFilterBackend
 
 from rest_framework import status
 from rest_framework.decorators import action
@@ -26,7 +25,6 @@ class RecipeViewset(ModelViewSet):
     """
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
-    filter_backends = [DjangoFilterBackend]
     filterset_class = FiltersRecipe
     pagination_class = UserPagination
     permission_classes = [IsAuthorOrAdmin,
